@@ -27,4 +27,4 @@ Graphics are included as a sprites file so there's only a single .png request (p
 
 I spent days reverse engineering this, drop me a line if it helped you, or if you've adapted it to another model scoreboard!
 
-[END]
+[End of Line]
