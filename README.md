@@ -3,9 +3,11 @@ Drop-in replacement for the Baseball 3314 Varsity/All-Star/BSN/Sportable scorebo
 
 Manufacturer's ancient remote was either a 5pin DIN connector that seemed to be RS-485 (but maybe not) or included the artaflex 2.4Ghz module (discontinued in 2018) which constantly disconnected, probably because it conflicted with every other 2.4Ghz WiFi network around.
 
-Solution: Replace the brain-box with an Arduino WiFi R4 board, but keep the custom dual output power supply: MeanWell PD85-SP with dual output 35VDC 2.3A, 12VDC 0.25A (which seemingly doesn't exist anywhere today)
+Solution: Replace the brain-box with an Arduino WiFi R4 board, but keep the custom dual output 35v/12v power supply
 
-Now anybody can use their phone/tablet to control the scoreboard!  Security should be accomplished by a dedicated SSID just for the scoreboard(s) and only allow actual coaches/announcers to connect.
+Now anybody can use their phone/tablet to control the scoreboard!
+
+Security should be accomplished by a dedicated SSID just for the scoreboard(s) and only allow actual coaches/announcers to connect.
 
 See example: [Webpage_Screenshot.png](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/Webpage_Screenshot.png)
 
@@ -18,10 +20,10 @@ This cable connects to HC595 8-Bit Shift Registers on each digit.
 
 Arduino power via buck converter down to 7 or 9vdc should NOT be sourced from the custom 35v/12v power supply as it doesn't seem to supply enough amperage for another load on either the 35v or 12v rail, you will find that the Arduino randomly resets if many digits are 8 (all segments lit up)
 
-Note on the power supply...
-Red wire is 35v rail - used to power the LED segments via several voltage regulators, one for each segment of the 7-segment digit
-Brown wire is 12v rail - used to power a single voltage regulator on each digit which drops to 5v to power the HC595 and ULN2803A chips
-Black wire is GND
+Note on the power supply: MeanWell PD85-SP with dual output 35VDC 2.3A, 12VDC 0.25A (which seemingly doesn't exist anywhere today)
+ - Red wire is 35v rail - used to power the LED segments via several voltage regulators, one for each segment of the 7-segment digit
+ - Brown wire is 12v rail - used to power a single voltage regulator on each digit which drops to 5v to power the HC595 and ULN2803A chips
+ - Black wire is GND
 
 Graphics are included as a sprites file so there's only a single .png request (prevents upsetting Arduino's little web server as opposed to 10+ image requests)
 
