@@ -17,7 +17,11 @@ Digits are connected by a 10pin ribbon cable, of which only 4 pins are useful (d
 
 This cable connects to HC595 8-Bit Shift Registers on each digit.
 
-Arduino --> Leftmost home digit (10's) --> right home digit (1's) --> Inning --> Dot driver board --> Guest left digit (10's) --> Rightmost Guest digit (1's)
+Arduino --> Left home digit (10's) --> right home digit (1's) --> Inning --> Dot driver board --> Left guest digit --> Right guest digit
+
+On a bigger scoreboard (3320) they routed this cable in what I suppose was efficent for saving on copper wire but full on silly for programming...
+
+Arduino --> BallDigit, Inn1guest, Inn1home, Inn2home, Inn2guest, Inn3guest, Inn3home, Inn4home, Inn4guest, Inn5guest, Inn5home, Inn6home, Inn6guest, StrikeDigit, Inn7guest, Inn7home, Inn8home, Inn8guest, Inn9guest, Inn9home, LeftHomeDigit, RightHomeDigit, RightGuestDigit, LeftGuestDigit, OutDigit
 
 Example pinout...
 
