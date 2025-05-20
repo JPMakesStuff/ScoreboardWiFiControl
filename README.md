@@ -3,16 +3,20 @@ Drop-in replacement for the Baseball 3314 Varsity/All-Star/BSN/Sportable scorebo
 
 Manufacturer's ancient remote was either a 5pin DIN connector that seemed to be RS-485 (but maybe not quite) or included the artaflex 2.4Ghz module (discontinued in 2018) which constantly disconnected; possibly because of a poorly designed heartbeat signal that can't ever be missed, or because it conflicted with every other 2.4Ghz WiFi network around.
 
-Solution: Replace the brain-box with an Arduino WiFi R4 board, but keep the custom dual output 35v/12v power supply
+Solution: Replace the brain-box with an [Arduino WiFi R4 board](https://store.arduino.cc/products/uno-r4-wifi), but keep the custom dual output 35v/12v power supply
 
-Now anybody can use their phone/tablet to control the scoreboard!
+Now anybody can use a WiFi connected phone/tablet/laptop to control the scoreboard!
 
 Security should be accomplished by a dedicated SSID just for the scoreboard(s) and only allow actual coaches/announcers to connect.
+
+Example of webpage... (Make it an "app" icon using browser options menu, "Add to Home screen")
 
 ![Webpage_Screenshot_On_Phone](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/Webpage_Screenshot_On_Phone.png?raw=true)
 
 Digits are connected by a 10pin ribbon cable, of which only 4 pins are useful but they doubled them up for redundancy against broken lines? I guess?
 Arduino --> Leftmost home digit (10's) --> right home digit (1's) --> Inning --> Dot driver board --> Guest left digit (10's) --> Rightmost Guest digit (1's)
+
+Example pinout...
 
 ![10pin connector](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/10pin_ribbon_cable.jpg?raw=true)
 
