@@ -9,7 +9,7 @@ Now anybody can use a WiFi connected phone/tablet/laptop to control the scoreboa
 
 Security should be accomplished by a dedicated SSID just for the scoreboard(s) and only allow actual coaches/announcers to connect.
 
-Example of webpage... (Make it an "app" icon using browser options menu, "Add to Home screen")
+Example webpage... (Make it an "app" icon using browser options menu, "Add to Home screen")
 
 ![Webpage_Screenshot_On_Phone](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/Webpage_Screenshot_On_Phone.png?raw=true)
 
