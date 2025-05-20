@@ -9,7 +9,7 @@ Now anybody can use their phone/tablet to control the scoreboard!
 
 Security should be accomplished by a dedicated SSID just for the scoreboard(s) and only allow actual coaches/announcers to connect.
 
-![Webpage_Screenshot](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/Webpage_Screenshot.png?raw=true)
+![Webpage_Screenshot_On_Phone](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/Webpage_Screenshot_On_Phone.png?raw=true)
 
 Digits are connected by a 10pin ribbon cable, of which only 4 pins are useful but they doubled them up for redundancy against broken lines? I guess?
 Arduino --> Leftmost home digit (10's) --> right home digit (1's) --> Inning --> Dot driver board --> Guest left digit (10's) --> Rightmost Guest digit (1's)
