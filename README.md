@@ -13,14 +13,15 @@ Example webpage... (Make it an "app" icon using browser options menu, "Add to Ho
 
 ![Webpage_Screenshot_On_Phone](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/Webpage_Screenshot_On_Phone.png?raw=true)
 
-Digits are connected by a 10pin ribbon cable, of which only 4 pins are useful but they doubled them up for redundancy against broken lines? I guess?
+Digits are connected by a 10pin ribbon cable, of which only 4 pins are useful (doubled up for redundancy against broken lines, I guess?)
+
+This cable connects to HC595 8-Bit Shift Registers on each digit.
+
 Arduino --> Leftmost home digit (10's) --> right home digit (1's) --> Inning --> Dot driver board --> Guest left digit (10's) --> Rightmost Guest digit (1's)
 
 Example pinout...
 
 ![10pin connector](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/10pin_ribbon_cable.jpg?raw=true)
-
-This cable connects to HC595 8-Bit Shift Registers on each digit.
 
 Arduino power via buck converter down to 7.5 to 9 VDC should NOT be sourced from the custom 35v/12v power supply as it doesn't seem to supply enough amperage for another load on the 12v rail, you will find that the Arduino randomly resets if many digits are 8 (all segments lit up)
 
