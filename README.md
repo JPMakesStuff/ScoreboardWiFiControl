@@ -34,7 +34,7 @@ Note on the power supply: MeanWell PD85-SP with dual output 35VDC 2.3A, 12VDC 0.
  - Brown wire is 12v rail - used to power a single voltage regulator on each digit which drops to 5v to power the HC595 and ULN2803A chips
  - Black wire is GND
 
-Graphics are included as a sprites file so there's only a single .png request (prevents upsetting Arduino's little web server as opposed to 10+ image requests)
+Graphics are included as a sprites file so there's only a single .png request (prevents upsetting Arduino's little web server as opposed to 10+ image requests)  If you want to insert your own logo and touch button graphics you could edit the example .png graphic, keeping the same placement and dimentions, then ask ChatGPT to create the arduino_images.h file from your own .png file.
 
 I spent days reverse engineering this, drop me a line if it helped you, or if you've adapted it to another model scoreboard!
 
