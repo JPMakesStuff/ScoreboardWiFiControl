@@ -7,7 +7,7 @@ Solution: Replace the brain-box with an [Arduino WiFi R4 board](https://store.ar
 
 Now anybody can use a WiFi connected phone/tablet/laptop to control the scoreboard!
 
-Security should be accomplished by a dedicated SSID just for the scoreboard(s) and only allow actual coaches/announcers to connect.
+Security should be accomplished by a dedicated SSID just for the scoreboard(s) and only allow actual coaches/announcers to connect.  As currently implemented both the Arduino and your end-users should connect to the same wireless SSID, the Arduino should be given a DHCP reservation (so the IP doesn't change) on the network, and optionally a DNS A record pointing to that IP.  Arduino code could be adapted to broadcast it's own SSID (AP mode) but this is considerably less reliable in terms of WiFi channel saturation and end-user connection simplicity, I strongly suggest against this.
 
 Example webpage... (Make it an "app" icon using browser options menu, "Add to Home screen")
 
