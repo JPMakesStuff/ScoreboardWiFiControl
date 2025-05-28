@@ -18,31 +18,33 @@ This cable connects to HC595 8-Bit Shift Register ICs on each digit.
 
 On the [3314](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/3314.jpg) baseball scoreboard this cable is routed like this...<br/>
 Arduino --> Left home digit (10's) --> right home digit (1's) --> Inning --> Dot driver board --> Left guest digit --> Right guest digit<br/>
-...the original control box that you need to remove the ribbon cable from is found on the front side, hatch under the inning digit<br/>
+...remove the ribbon cable from control box found on the front side, hatch below the inning digit<br/>
 ...use the Arduino code "ard_scoreboard"
 
 On the [3320](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/3320.jpg) baseball scoreboard they routed this cable in what I suppose was efficient for saving on copper wire but full on silly for programming...<br/>
 Arduino --> BallDigit, Inn1guest, Inn1home, Inn2home, Inn2guest, Inn3guest, Inn3home, Inn4home, Inn4guest, Inn5guest, Inn5home, Inn6home, Inn6guest, StrikeDigit, Inn7guest, Inn7home, Inn8home, Inn8guest, Inn9guest, Inn9home, LeftHomeDigit, RightHomeDigit, RightGuestDigit, LeftGuestDigit, OutDigit<br/>
-...the original control box that you need to remove the ribbon cable from is found in cabinet B, front side, hatch above the 2nd inning guest score digit<br/>
+...remove the ribbon cable from control box found on the front side, hatch above the 2nd inning guest score digit<br/>
 ...use the Arduino code "ard_bigscoreboard"
 
 Example pinout...<br/>
-![10pin connector](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/10pin_ribbon_cable.jpg?raw=true)
+![10pin connector](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/10pin_ribbon_cable.jpg?raw=true)<br/>
+You MUST also connect GND on the Arduino to GND on the ribbon cable
 
 Valid ways of connecting to this cable without butchering it (so you could connect it back to the manufacture's control box) are...<br/>
  - [2X5 10P Dual Rows 2.54mm 0.1" Pitch Shrouded IDC Male Header](https://www.amazon.com/dp/B00B3PI02G)
  - [Male IDC Socket 10 Pin 2x5 Pin 2.54mm Pitch Box Header Connector](https://www.amazon.com/dp/B08T1YDG8M)
  - [Male to Male Breadboard Jumper Ribbon Cables](https://www.amazon.com/dp/B01EV70C78)
+Do NOT connect the ribbon cable to both your Arduino and the manufacture's control box at the same time, doing so will impede the signal to control any of the digits.
 
 Arduino power should NOT be sourced from the custom 35v/12v power supply as it doesn't seem to supply enough amperage for another load on the 12v rail, you will find that the Arduino randomly resets if many digits are 8 (all segments lit up)
 
-In my example I chose to power the Arduino using a [5v 2amp USB power supply](https://www.amazon.com/dp/B07DCR29GN) feeding into (either the USB port or) the 5v pin on the Arduino.  Optionally you could also use a 7.5v or 9v power supply feeding into the barrel jack.
+In my example I chose to power the Arduino using a [5v 2amp USB power supply](https://www.amazon.com/dp/B07DCR29GN) feeding into (either the USB port or) the 5v pin on the Arduino.  Optionally you could also use a 7.5v or 9v power supply feeding into the barrel jack, realizing this is dropped down to 5v via Arduino's on-board voltage regulator.
 
-120VAC can be obtained from the little hatch on the back of the scoreboard where the main power cable enters, or by using an [IEC splitter](https://www.amazon.com/dp/B0BGPXDYSM) before it goes into the manufacture's control box.
+120VAC can be obtained from the small hatch on the back of the scoreboard near the power entry point, or by using an [IEC splitter](https://www.amazon.com/dp/B0BGPXDYSM) before it goes into the manufacture's control box.
 
-Note on the manufacture's power supply...<br/>
+Note on the manufacture's power supply located inside the control box...<br/>
 MeanWell PD85-SP with dual output 35VDC 2.3A, 12VDC 0.25A (which I can't find anywhere today, perhaps was custom built just for Varsity)<br/>
-Someday this will be dead and I expect having to source a more common 36v supply and using the internal trim pot found on most MeanWell supply's to make it output 35v, and then having a seperate 12v power supply, and then connecting all the DC GNDs together.
+Someday this will die and I expect having to source a more common 36v supply and using the internal trim pot found on most MeanWell supply's to make it output 35v, having a seperate 12v power supply, then connecting both GNDs together.
  - Red wire is 35v rail - used to power the LED segments via several voltage regulators, one for each segment of the 7-segment digit
  - Brown wire is 12v rail - used to power a single voltage regulator on each digit which drops to 5v to power the HC595 and ULN2803A chips
  - Black wire is GND
