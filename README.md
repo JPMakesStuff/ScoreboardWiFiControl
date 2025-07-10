@@ -7,7 +7,8 @@ Solution: Replace the manufacturer's control box with an [Arduino UNO R4 WiFi bo
 
 Now anybody can use a **WiFi connected phone/tablet/laptop to control the scoreboard!**
 
-Security should be accomplished by a dedicated SSID just for the scoreboard(s) and for actual coaches/announcers to connect.<br/>
+Security should be accomplished by a dedicated SSID just for the scoreboard(s) and for actual coaches/announcers to connect.
+
 As currently implemented both the Arduino and your end-users should connect to the same wireless SSID, the Arduino should be given a DHCP reservation (so the IP doesn't change) on the network, and optionally a DNS A record pointing to that IP for an easy to remember name.  Arduino code could be adapted so the Arduino broadcasts it's own SSID (AP mode) but this is considerably less reliable in terms of WiFi channel saturation and end-user connection simplicity, so I strongly suggest against this.
 
 Example webpage... (Make it an "app" icon using browser options menu, "Add to Home screen")<br/>
@@ -34,6 +35,7 @@ Valid ways of connecting to this cable without butchering it (so you could conne
  - [2X5 10P Dual Rows 2.54mm 0.1" Pitch Shrouded IDC Male Header](https://www.amazon.com/dp/B00B3PI02G)
  - [Male IDC Socket 10 Pin 2x5 Pin 2.54mm Pitch Box Header Connector](https://www.amazon.com/dp/B08T1YDG8M)
  - [Male to Male Breadboard Jumper Ribbon Cables](https://www.amazon.com/dp/B01EV70C78)
+
 Do NOT connect the ribbon cable to both your Arduino and the manufacture's control box at the same time, doing so will impede the signal to control any of the digits.
 
 Arduino power should NOT be sourced from the custom 35v/12v power supply as it doesn't seem to supply enough amperage for another load on the 12v rail, you will find that the Arduino randomly resets if many digits are 8 (all segments lit up)
