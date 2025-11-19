@@ -27,8 +27,8 @@ Arduino --> BallDigit, Inn1guest, Inn1home, Inn2home, Inn2guest, Inn3guest, Inn3
 ...remove the ribbon cable from control box found on the front side, hatch above the 2nd inning guest score digit<br/>
 ...use the Arduino code "ard_bigscoreboard"
 
-To test individual digit boards, or the vane driver board (for ball/strike/out dots)
-Arduino --> only one digit at a time -- not the entire scoreboard! -- nothing should be connected to the "output" ribbon cable
+To test individual digit boards, or the vane driver board (for ball/strike/out dots)<br/>
+Arduino --> only one digit at a time -- not the entire scoreboard! -- nothing should be connected to the "output" ribbon cable<br/>
 ...use the Arduino code "LED_tester"
 
 Example pinout...<br/>
