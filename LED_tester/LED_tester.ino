@@ -4,14 +4,21 @@
 #include "Arduino_LED_Matrix.h"
 ArduinoLEDMatrix matrix;
 
-// --------------- WiFi CONFIG ---------------
-// Fill these in to match your WiFi
-// When testing without infrastructure WiFi set to match your phone's hotspot WiFi
-char ssid[] = "[TYPE YOUR SSID HERE]";
-char pass[] = "[TYPE YOUR PASSWORD HERE]";
+// Fill these in to match your scoreboard WiFi
+// ---------- PRIMARY WIFI ----------
+char ssid1[] = "[PUT_YOUR_SSID_HERE]";
+char pass1[] = "[PUT_YOUR_PASSWORD_HERE]";
 
-// software version
-char swver[] = "25.11.18r01";
+// Fill these in to match your phone hotspot or home network for testing
+// ---------- FALLBACK WIFI ----------
+char ssid2[] = "AlternateWiFi";
+char pass2[] = "AlternatePass";
+
+// which WiFi did we end up on 1 = primary, 2 = fallback
+int activeNet = 0;
+
+// store the software version
+char swver[] = "25.11.20r03";
 
 // declair pins
 int dataPin = 4;	// Data pin of 74HC595 is connected to Digital pin 4 (purple wire to digit ribbon cable)
@@ -58,13 +65,65 @@ byte num[] = {
 //       x  segment position B on (also Ball 2)
 //        x segment position A on (also Ball 1)
 
+// ---- animation modes ----
+const int MODE_MANUAL = 0;
+const int MODE_CHASE  = 1;
+const int MODE_MULTI  = 2;
+const int MODE_COUNT  = 3;
+
+int testMode = MODE_MANUAL;        // current mode
+unsigned long stepInterval = 500;  // ms between steps (changed via web UI)
+unsigned long lastStepTime = 0;    // last time we advanced
+int stepIndex = 0;                 // current position in the sequence
+
+// Chase sequence: A, F, G, C, D, E, G, B
+// Using the bit layout from num[] (LSB=A, then B,C,D,E,F,G)
+const byte chaseSeq[] = {
+  B00000001, // A
+  B00100000, // F
+  B01000000, // G
+  B00000100, // C
+  B00001000, // D
+  B00010000, // E
+  B01000000, // G again
+  B00000010  // B
+};
+const int chaseLen = sizeof(chaseSeq) / sizeof(chaseSeq[0]);
+
+// Multiples sequence: F+B, A+G, E+C, G+D
+const byte multiSeq[] = {
+  (B00100000 | B00000010), // F + B
+  (B00000001 | B01000000), // A + G
+  (B00010000 | B00000100), // E + C
+  (B01000000 | B00001000)  // G + D
+};
+const int multiLen = sizeof(multiSeq) / sizeof(multiSeq[0]);
+
+
 // store if new serial data should be sent to the HC595 shift registers or not
 int flag_update = false;
 
+// WiFi connection setup
 byte mac[6];  // the MAC address of WiFi module
+
+bool connectWiFi(const char* ssid, const char* pass, unsigned long timeoutMs) {
+  WiFi.disconnect();
+  delay(200);
+
+  WiFi.begin(ssid, pass);
+
+  unsigned long startAttemptTime = millis();
+
+  while (WiFi.status() != WL_CONNECTED && millis() - startAttemptTime < timeoutMs) {
+    delay(500);
+  }
+
+  return WiFi.status() == WL_CONNECTED;
+}
 
 int status = WL_IDLE_STATUS;
 WiFiServer server(80);
+
 
 
 void setup() {
@@ -89,33 +148,72 @@ void setup() {
     //Serial.println("Please upgrade the firmware");
   }
 
-  // attempt to connect to WiFi network:
-  while (status != WL_CONNECTED) {
-    //Serial.print("Attempting to connect to Network named: ");
-    //Serial.println(ssid);  // print the network name (SSID);
-    // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
-    status = WiFi.begin(ssid, pass);
-    // wait 15 seconds for connection:
-    delay(15000);
+  // ---------- WIFI CONNECT WITH FALLBACK ----------
+  bool connected = false;
+
+  // try primary first
+  connected = connectWiFi(ssid1, pass1, 12000);
+  if (connected) {
+    activeNet = 1;
+  } else {
+    // try fallback
+    connected = connectWiFi(ssid2, pass2, 12000);
+    if (connected) {
+      activeNet = 2;
+    }
   }
 
-  server.begin();     // start the web server on port 80
+  // If neither worked, keep cycling forever (primary then fallback)
+  while (!connected) {
+    connected = connectWiFi(ssid1, pass1, 12000);
+    if (connected) {
+      activeNet = 1;
+      break;
+    }
 
-  IPAddress localIP = WiFi.localIP();
-  String ipStr = "." + String(localIP[2]) + "." + String(localIP[3]);  // show only 3rd and 4th octets (index 2 and 3)
+    connected = connectWiFi(ssid2, pass2, 12000);
+    if (connected) {
+      activeNet = 2;
+      break;
+    }
+  }
 
-  matrix.begin();
-  matrix.beginDraw();
-  matrix.stroke(0xFFFFFFFF);
-  matrix.textScrollSpeed(50);
-  matrix.textFont(Font_4x6);
-  matrix.beginText(0, 1, 0xFFFFFF);
-  matrix.println(ipStr);
-  matrix.endText(SCROLL_LEFT);
-  matrix.endDraw();
+
+server.begin();     // start the web server on port 80
+
+// ---------- WAIT FOR A REAL IP (not 0.0.0.0) ----------
+IPAddress localIP;
+unsigned long ipStart = millis();
+
+// wait up to 10 seconds for DHCP
+do {
+  localIP = WiFi.localIP();
+  if (localIP[0] != 0) break;   // got something real
+  delay(200);
+} while (millis() - ipStart < 10000);
+
+// PRI or SEC depending on which network connected
+String netLabel = (activeNet == 1) ? "PRI" : "SEC";
+
+// If still no IP, we'll show 0.0 to make it obvious something's wrong
+String label = netLabel + " ." + String(localIP[2]) + "." + String(localIP[3]);
+
+matrix.begin();
+matrix.beginDraw();
+matrix.stroke(0xFFFFFFFF);
+matrix.clear();
+matrix.textFont(Font_4x6);
+matrix.textScrollSpeed(80);   // adjust to taste
+
+matrix.beginText(0, 1, 0xFFFFFF);
+matrix.println(label);
+matrix.endText(SCROLL_LEFT);
+matrix.endDraw();
+
 
   flag_update = false;
 }
+
 
 
 void loop() {
@@ -145,7 +243,6 @@ WiFiClient client = server.available();   // listen for incoming clients
 
         // image first since header is different
         // using image sprite to save memory
-        // NOT USED in single digit tester pages
         if (request.indexOf("GET /sprites.png") >= 0) {
           client.println("Content-Type: image/png");
           //client.println("Content-Length: " + String(sprites_png_len));
@@ -249,58 +346,97 @@ WiFiClient client = server.available();   // listen for incoming clients
 
 else if (request.indexOf("GET /test") >= 0) {
 
-  // ----------------- PARSE WHICH SEGMENT TO SHOW -----------------
-  // Use /test?seg=8, /test?seg=off, /test?seg=A, etc.
-
-  int testVal = 10;             // default = OFF (index 10)
-  const char* currentLabel = "Off";
-
-  if (request.indexOf("seg=8") >= 0) {
-    testVal = 8;
-    currentLabel = "All 7 segments";
-  } else if (request.indexOf("seg=A") >= 0) {
-    testVal = 11;
-    currentLabel = "Segment A only";
-  } else if (request.indexOf("seg=B") >= 0) {
-    testVal = 12;
-    currentLabel = "Segment B only";
-  } else if (request.indexOf("seg=C") >= 0) {
-    testVal = 13;
-    currentLabel = "Segment C only";
-  } else if (request.indexOf("seg=D") >= 0) {
-    testVal = 14;
-    currentLabel = "Segment D only";
-  } else if (request.indexOf("seg=E") >= 0) {
-    testVal = 15;
-    currentLabel = "Segment E only";
-  } else if (request.indexOf("seg=F") >= 0) {
-    testVal = 16;
-    currentLabel = "Segment F only";
-  } else if (request.indexOf("seg=G") >= 0) {
-    testVal = 17;
-    currentLabel = "Segment G only";
-  } else if (request.indexOf("seg=off") >= 0) {
-    testVal = 10;
-    currentLabel = "All off";
+  // ---------- parse speed parameter (speed=###) ----------
+  int spIdx = request.indexOf("speed=");
+  if (spIdx >= 0) {
+    spIdx += 6;
+    int endIdx = request.indexOf(' ', spIdx);
+    int ampIdx = request.indexOf('&', spIdx);
+    if (ampIdx >= 0 && ampIdx < endIdx) endIdx = ampIdx;
+    if (endIdx < 0) endIdx = request.length();
+    String sp = request.substring(spIdx, endIdx);
+    sp.trim();
+    long v = sp.toInt();
+    if (v >= 50 && v <= 5000) {    // clamp 50–5000 ms
+      stepInterval = (unsigned long)v;
+    }
   }
 
-  // ----------------- PUSH TO SINGLE DIGIT -----------------
-  // First digit in chain (HOME left in the full board),
-  // but for this tester it's just "the only digit connected".
-  int u_val = testVal;
+  // ---------- parse mode parameter (mode=chase/multi/count/manual) ----------
+  if (request.indexOf("mode=chase") >= 0) {
+    testMode = MODE_CHASE;
+    stepIndex = 0;
+    lastStepTime = millis();
+    stepInterval = 200;      // default 200 ms for chase
 
-  dotA = 0;
-  dotB = 0;
-  dotC = 0;
-  dotD = 0;
-  dotE = 0;
-  dotF = 0;
-  dotG = 0;
+  } else if (request.indexOf("mode=multi") >= 0) {
+    testMode = MODE_MULTI;
+    stepIndex = 0;
+    lastStepTime = millis();
+    stepInterval = 400;      // default 400 ms for multiples
 
-  digit_update(u_val, 10, 10, 10, 10, 10,
-               dotA, dotB, dotC, dotD, dotE, dotF, dotG);
+  } else if (request.indexOf("mode=count") >= 0) {
+    testMode = MODE_COUNT;
+    stepIndex = 0;
+    lastStepTime = millis();
+    stepInterval = 1000;     // default 1000 ms (1 second) for count
 
-  // ----------------- TEST PAGE UI -----------------
+  } else if (request.indexOf("mode=manual") >= 0) {
+    testMode = MODE_MANUAL;
+  }
+
+  // ---------- parse manual segment selection (seg=...) ----------
+  // Use /test?seg=8, /test?seg=off, /test?seg=A, etc.
+  int testVal = 10;             // default OFF
+  const char* currentLabel = "Off";
+
+  if (request.indexOf("seg=") >= 0) {
+    // Clicking any segment forces MANUAL mode
+    testMode = MODE_MANUAL;
+
+    if (request.indexOf("seg=8") >= 0) {
+      testVal = 8;
+      currentLabel = "Digit 8 (all segments)";
+    } else if (request.indexOf("seg=A") >= 0) {
+      testVal = 11;
+      currentLabel = "Segment A only";
+    } else if (request.indexOf("seg=B") >= 0) {
+      testVal = 12;
+      currentLabel = "Segment B only";
+    } else if (request.indexOf("seg=C") >= 0) {
+      testVal = 13;
+      currentLabel = "Segment C only";
+    } else if (request.indexOf("seg=D") >= 0) {
+      testVal = 14;
+      currentLabel = "Segment D only";
+    } else if (request.indexOf("seg=E") >= 0) {
+      testVal = 15;
+      currentLabel = "Segment E only";
+    } else if (request.indexOf("seg=F") >= 0) {
+      testVal = 16;
+      currentLabel = "Segment F only";
+    } else if (request.indexOf("seg=G") >= 0) {
+      testVal = 17;
+      currentLabel = "Segment G only";
+    } else if (request.indexOf("seg=off") >= 0) {
+      testVal = 10;
+      currentLabel = "Off";
+    }
+
+    // apply manual pattern immediately
+    int u_val = testVal;
+    dotA = dotB = dotC = dotD = dotE = dotF = dotG = 0;
+    digit_update(u_val, 10, 10, 10, 10, 10,
+                 dotA, dotB, dotC, dotD, dotE, dotF, dotG);
+  }
+
+  // ---------- compute mode name for display ----------
+  const char* modeName = "Manual";
+  if (testMode == MODE_CHASE) modeName = "Chase test";
+  else if (testMode == MODE_MULTI) modeName = "Multiples test";
+  else if (testMode == MODE_COUNT) modeName = "Count test";
+
+  // ----------------- BUILD TEST PAGE UI -----------------
   client.print("<html>");
   client.print("<head>");
   client.print("<meta http-equiv=\"Content-Language\" content=\"en-us\">");
@@ -319,8 +455,17 @@ else if (request.indexOf("GET /test") >= 0) {
   client.print("width: 300px;");
   client.print("background-position: -180px 0;");
   client.print("}");
+  client.print(".seg-panel{");
+  client.print("padding:18px;");
+  client.print("margin-top:8px;");
+  client.print("display:inline-block;");
+  client.print("border:1px solid #ddd;");
+  client.print("border-radius:8px;");
+  client.print("background:#fafafa;");
+  client.print("}");
 
-  client.print("body{font-family:Verdana, sans-serif;font-size:12pt;text-align:center;}");
+
+  client.print("body{font-family:Verdana, sans-serif;font-size:12pt;text-align:left;}");
 
   client.print("a.btn{display:inline-block;margin:4px 6px;padding:6px 10px;border:1px solid #ccc;border-radius:6px;text-decoration:none;color:black;}");
   client.print("a.btn:hover{background:#eee;}");
@@ -350,69 +495,67 @@ else if (request.indexOf("GET /test") >= 0) {
   client.print("<font face=\"Verdana\" style=\"font-size: 10pt\">");
 
   client.print("Test digit segments<br>");
-  client.print("<div class='current'>Current pattern: <b>");
-  client.print(currentLabel);
-  client.print("</b></div><br>");
+  client.print("<div class='current'>Mode: <b>");
+  client.print(modeName);
+  client.print("</b> &nbsp;|&nbsp; Step: ");
+  client.print(stepInterval);
+  client.print(" ms</div>");
 
+  if (testMode == MODE_MANUAL) {
+    client.print("<div class='current'>Current pattern: <b>");
+    client.print(currentLabel);
+    client.print("</b></div>");
+  }
+
+  client.print("<br>");
+
+  // Auto-mode buttons
   client.print("<div>");
-  client.print("<a class='btn' href=\"/test?seg=off\">All off</a>");
-  client.print("<a class='btn' href=\"/test?seg=8\">All 7 segments</a>");
+  client.print("<a class='btn' href=\"/test?mode=chase\">Chase</a>");
+  client.print("<a class='btn' href=\"/test?mode=multi\">Multiples</a>");
+  client.print("<a class='btn' href=\"/test?mode=count\">Count</a>");
   client.print("</div><br>");
 
-  // 7-segment layout with G included:
-  //        A
-  //     F     B
-  //        G
-  //     E     C
-  //        D
+  // Speed control
+  client.print("<form method='get' action='/test' style='margin-top:10px;'>");
+  client.print("Speed (ms between steps): ");
+  client.print("<input type='number' name='speed' min='50' max='5000' step='50' value='");
+  client.print(stepInterval);
+  client.print("'>");
+  client.print("<input type='submit' value='Set speed'>");
+  client.print("</form><br>");
 
+  client.print("<div>");
+  client.print("<a class='btn' href=\"/test?seg=off\">All OFF</a>");
+  client.print("<a class='btn' href=\"/test?seg=8\">8 (all segments)</a>");
+  client.print("</div><br>");
+
+  // 7-segment layout
+  client.print("<div class='seg-panel'>");
   client.print("<table class='seg-grid' cellspacing='0' cellpadding='0'>");
 
-  // Row 1: top (A)
-  client.print("<tr>");
-  client.print("<td></td>");
-  client.print("<td><a class='seg h' href=\"/test?seg=A\">A</a></td>");
-  client.print("<td></td>");
-  client.print("</tr>");
+  // Row 1: A
+  client.print("<tr><td></td><td><a class='seg h' href=\"/test?seg=A\">A</a></td><td></td></tr>");
 
-  // Row 2: upper verticals (F and B)
-  client.print("<tr>");
-  client.print("<td><a class='seg v' href=\"/test?seg=F\">F</a></td>");
-  client.print("<td></td>");
-  client.print("<td><a class='seg v' href=\"/test?seg=B\">B</a></td>");
-  client.print("</tr>");
+  // Row 2: F, B
+  client.print("<tr><td><a class='seg v' href=\"/test?seg=F\">F</a></td><td></td><td><a class='seg v' href=\"/test?seg=B\">B</a></td></tr>");
 
-  // Row 3: middle (G)
-  client.print("<tr>");
-  client.print("<td></td>");
-  client.print("<td><a class='seg h' href=\"/test?seg=G\">G</a></td>");
-  client.print("<td></td>");
-  client.print("</tr>");
+  // Row 3: G
+  client.print("<tr><td></td><td><a class='seg h' href=\"/test?seg=G\">G</a></td><td></td></tr>");
 
-  // Row 4: lower verticals (E and C)
-  client.print("<tr>");
-  client.print("<td><a class='seg v' href=\"/test?seg=E\">E</a></td>");
-  client.print("<td></td>");
-  client.print("<td><a class='seg v' href=\"/test?seg=C\">C</a></td>");
-  client.print("</tr>");
+  // Row 4: E, C
+  client.print("<tr><td><a class='seg v' href=\"/test?seg=E\">E</a></td><td></td><td><a class='seg v' href=\"/test?seg=C\">C</a></td></tr>");
 
-  // Row 5: bottom (D)
-  client.print("<tr>");
-  client.print("<td></td>");
-  client.print("<td><a class='seg h' href=\"/test?seg=D\">D</a></td>");
-  client.print("<td></td>");
-  client.print("</tr>");
+  // Row 5: D
+  client.print("<tr><td></td><td><a class='seg h' href=\"/test?seg=D\">D</a></td><td></td></tr>");
 
-  client.print("</table><br><br>");
-
-  client.print("Note: When testing dot driver...<br>");
-  client.print("A, B, C = Ball 1, 2, 3<br>");
-  client.print("D, E = Strike 1, 2<br>");
-  client.print("F, G = Out 1, 2<br><br>");
+  client.print("</table>");
+  client.print("</div><br><br>");
 
   client.print("<br><a href=\"/\">Back to main menu</a><br><br>");
 
   client.print("<font face=\"Verdana\" style=\"font-size: 8pt\">");
+  client.print("<a href=\"/sysinfo\">Show system info</a><br>");
   client.print("Scoreboard digit tester v");
   client.print(swver);
   client.print("<br>");
@@ -425,6 +568,7 @@ else if (request.indexOf("GET /test") >= 0) {
   client.print("</body>");
   client.print("</html>");
 }
+
 
          else {
           // show the main webpage
@@ -495,24 +639,65 @@ else if (request.indexOf("GET /test") >= 0) {
     client.stop();
   }
 
+  // run any active animation
+  handleAnimations();
 }
 
-void digit_update(int u, int v, int w, int x, int y, int z,
-                  int dotA, int dotB, int dotC, int dotD, int dotE, int dotF, int dotG)
-{
+
   // Single-digit tester version:
-  // Only the first 74HC595 / digit is connected
-  // ignore v,w,x,y,z and all dot flags
-  // just show num[u] on that one digit
-
-  byte pattern = num[u];
-
+  //   Only the first 74HC595 / digit is connected.
+  //   We ignore v,w,x,y,z and all dot flags.
+  //   We just show num[u] on that one digit.
+void writeDigitPattern(byte pattern) {
   digitalWrite(latchPin, LOW);
   shiftOut(dataPin, clockPin, MSBFIRST, pattern);
   digitalWrite(latchPin, HIGH);
+}
 
+// single-digit tester: only uses 'u' as an index into num[]
+void digit_update(int u, int v, int w, int x, int y, int z,
+                  int dotA, int dotB, int dotC, int dotD, int dotE, int dotF, int dotG)
+{
+  byte pattern = num[u];   // only first argument matters
+  writeDigitPattern(pattern);
   flag_update = true;
 }
+
+
+
+void handleAnimations() {
+  if (testMode == MODE_MANUAL) return;  // nothing to do
+
+  unsigned long now = millis();
+  if (now - lastStepTime < stepInterval) return;  // not yet time to step
+
+  lastStepTime = now;
+
+  byte pattern = B00000000;
+
+  if (testMode == MODE_CHASE) {
+    pattern = chaseSeq[stepIndex];
+    stepIndex = (stepIndex + 1) % chaseLen;
+    writeDigitPattern(pattern);
+
+  } else if (testMode == MODE_MULTI) {
+    pattern = multiSeq[stepIndex];
+    stepIndex = (stepIndex + 1) % multiLen;
+    writeDigitPattern(pattern);
+
+  } else if (testMode == MODE_COUNT) {
+    // stepIndex goes 0..9 and wraps, use num[0..9]
+    int digit = stepIndex % 10;
+    pattern = num[digit];
+    stepIndex = (stepIndex + 1) % 10;
+    writeDigitPattern(pattern);
+
+  } else {
+    return;
+  }
+}
+
+
 
 String formatUptime() {
   unsigned long ms = millis();
