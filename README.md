@@ -28,7 +28,8 @@ Arduino --> BallDigit, Inn1guest, Inn1home, Inn2home, Inn2guest, Inn3guest, Inn3
 ...use the Arduino code "ard_bigscoreboard"
 
 To test individual digit boards, or the vane driver board (for ball/strike/out dots)<br/>
-Arduino --> only one digit at a time -- not the entire scoreboard! -- nothing should be connected to the "output" ribbon cable<br/>
+Arduino --> only one digit at a time -- not the entire scoreboard!<br/>
+...no other digits should be daisy-chained via additional ribbon cables connected to "output"<br/>
 ...use the Arduino code "LED_tester" [example of test page](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/Webpage_Screenshot_LED_tester.png)
 
 Example pinout...<br/>
