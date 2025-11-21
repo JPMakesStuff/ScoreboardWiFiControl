@@ -75,7 +75,10 @@ Arduino --> 10pin ribbon cable --> only one digit at a time, not the entire scor
 ...no other digits should be daisy-chained via additional ribbon cables connected to "output"<br/>
 ...it's OK to keep the 3pin power cable connected to all, unless your trying to isolate a damaged/corroded/shorted digit or dot<br/>
 ...**you MUST also connect GND on the Arduino to GND on the ribbon cable** (or GND on the 3pin power cable)<br/>
-...use the Arduino code "[LED_tester](https://github.com/JPMakesStuff/ScoreboardWiFiControl/tree/main/LED_tester)" [example of test page](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/Webpage_Screenshot_LED_tester.png)
+...use the Arduino code "[LED_tester](https://github.com/JPMakesStuff/ScoreboardWiFiControl/tree/main/LED_tester)"
+...modify the SSID section near the top to match your WiFi on the field, or your home WiFi, or your phone's hotspot when testing anywhere
+
+See [example of test page](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/Webpage_Screenshot_LED_tester.png)
 
 ## LED repair info
 
@@ -89,7 +92,7 @@ PCB - 1600131<br/>
 PCA - 1500131<br/>
 REV A<br/>
 
-35 V in → LM317 + 30 Ω → ~42 mA constant current → two parallel strings of 13 × 1.8 V LEDs (voltage of drop ~23.4v) → ~20–21 mA per LED
+35v in → LM317 + 30 Ω → ~42 mA constant current → two parallel strings of 13 × 1.8v LEDs (voltage of drop ~23.4v) → ~20–21 mA per LED
 
 LED size = T-1 3/4 = 5mm
 
