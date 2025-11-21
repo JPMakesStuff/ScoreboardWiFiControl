@@ -40,8 +40,9 @@ Arduino --> BallDigit, Inn1guest, Inn1home, Inn2home, Inn2guest, Inn3guest, Inn3
 ...remove the ribbon cable from control box found on the front side, hatch above the 2nd inning guest score digit
 
 Example pinout...<br/>
-![10pin connector](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/10pin_ribbon_cable.jpg?raw=true)<br/>
-You MUST also connect GND on the Arduino to GND on the ribbon cable
+![10pin connector](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/10pin_ribbon_cable.jpg?raw=true)
+
+**You MUST also connect GND on the Arduino to GND on the ribbon cable**
 
 Valid ways of connecting to this cable without butchering it (so you could connect it back to the manufacture's control box) are...<br/>
  - [2X5 10P Dual Rows 2.54mm 0.1" Pitch Shrouded IDC Male Header](https://www.amazon.com/dp/B00B3PI02G)
@@ -58,10 +59,10 @@ In my example I chose to power the Arduino using a [5v 2amp USB power supply](ht
 
 Note on the manufacture's power supply located inside the control box...<br/>
 MeanWell PD85-SP with dual output 35VDC 2.3A, 12VDC 0.25A (which I can't find anywhere today, perhaps was custom built just for Varsity)<br/>
-Someday this will die and I expect having to source a more common 36v supply and using the internal trim pot found on most MeanWell supply's to make it output 35v, having a seperate 12v power supply, then connecting both GNDs together.
- - Red wire is 35v rail - used to power the LED segments via several voltage regulators, one for each segment of the 7-segment digit
- - Brown wire is 12v rail - used to power a single voltage regulator on each digit which drops to 5v to power the HC595 and ULN2803A chips
- - Black wire is GND
+Someday this will die and I expect having to source a more common 36v supply and using the internal trim pot found on most MeanWell supply's to make it output 35v, having a seperate 12v power supply, then connecting both GNDs together.<br/>
+ - Red wire is 35v rail - used to power the LED segments via several voltage regulators, one for each segment of the 7-segment digit<br/>
+ - Brown wire is 12v rail - used to power a single voltage regulator on each digit which drops to 5v to power the HC595 and ULN2803A chips<br/>
+ - Black wire is GND<br/>
 
 In my case the scoreboards were all outdoors and all seemed to be getting wet inside, plus the fact that it's a big metal box means putting the Arduino inside the scoreboard isn't the best for WiFi connectivity, so I elected to move the power supply and control circuitry to a [weatherproof box](https://www.amazon.com/dp/B0BFPXDN8M) and split the 120VAC using [this terminal block](https://www.amazon.com/dp/B0DNJRQP32).  Each scoreboard has a [wireless AP](https://www.amazon.com/dp/B0B231J81C) in a mesh configuration that connects them all back to the source of the WiFi at the concessions building.  We also use an Omada wireless controller and Omada firewall to allow GameChanger, but not streaming or YouTube or other high-bandwidth things.
 
@@ -72,8 +73,8 @@ See [example of my new control box](https://github.com/JPMakesStuff/ScoreboardWi
 To test individual digit boards, or the "vane driver" board for (ball/strike/out) dots<br/>
 Arduino --> 10pin ribbon cable --> only one digit at a time, not the entire scoreboard!<br/>
 ...no other digits should be daisy-chained via additional ribbon cables connected to "output"<br/>
-...it's OK to keep the 3pin power cable connected to all, unless your trying to isolate a damaged/corroded/shorted digit or dot
-...you MUST also connect GND on the Arduino to GND on the ribbon cable (or GND on the 3pin power cable)
+...it's OK to keep the 3pin power cable connected to all, unless your trying to isolate a damaged/corroded/shorted digit or dot<br/>
+...**you MUST also connect GND on the Arduino to GND on the ribbon cable** (or GND on the 3pin power cable)<br/>
 ...use the Arduino code "[LED_tester](https://github.com/JPMakesStuff/ScoreboardWiFiControl/tree/main/LED_tester)" [example of test page](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/Webpage_Screenshot_LED_tester.png)
 
 ## LED repair info
