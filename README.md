@@ -79,15 +79,15 @@ Arduino --> 10pin ribbon cable --> only one digit at a time, not the entire scor
 
 ## LED repair info
 
-Digit
-PCB - 1600129
-PCA - 1500129
-REV C
+Digit<br/>
+PCB - 1600129<br/>
+PCA - 1500129<br/>
+REV C<br/>
 
-Dots
-PCB - 1600131
-PCA - 1500131
-REV A
+Dots<br/>
+PCB - 1600131<br/>
+PCA - 1500131<br/>
+REV A<br/>
 
 35 V in → LM317 + 30 Ω → ~42 mA constant current → two parallel strings of 13 × 1.8 V LEDs (voltage of drop ~23.4v) → ~20–21 mA per LED
 
