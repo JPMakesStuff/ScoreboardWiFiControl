@@ -16,10 +16,10 @@ Example webpage... (Make it an "app" icon using browser options menu, "Add to Ho
 
 ## Software for Arduino
 
-For the [3314](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/3314.jpg) baseball scoreboard<br>
+For the [3314](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/3314.jpg) baseball scoreboard<br/>
 ...use the Arduino code "[ard_scoreboard](https://github.com/JPMakesStuff/ScoreboardWiFiControl/tree/main/ard_scoreboard)"
 
-For the [3320](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/3320.jpg) baseball scoreboard<br>
+For the [3320](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/3320.jpg) baseball scoreboard<br/>
 ...use the Arduino code "[ard_bigscoreboard](https://github.com/JPMakesStuff/ScoreboardWiFiControl/tree/main/ard_bigscoreboard)"
 
 Graphics are included as a sprites file so there's only a single .png request (prevents upsetting Arduino's little web server as opposed to 10+ image requests)  If you want to insert your own logo and touch button graphics you could edit the [example .png graphic](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/sprites_example.png), keeping the same placement and dimensions, then ask ChatGPT to create the arduino_images.h file from your own .png file.
@@ -75,7 +75,7 @@ Arduino --> 10pin ribbon cable --> only one digit at a time, not the entire scor
 ...no other digits should be daisy-chained via additional ribbon cables connected to "output"<br/>
 ...it's OK to keep the 3pin power cable connected to all, unless your trying to isolate a damaged/corroded/shorted digit or dot<br/>
 ...**you MUST also connect GND on the Arduino to GND on the ribbon cable** (or GND on the 3pin power cable)<br/>
-...use the Arduino code "[LED_tester](https://github.com/JPMakesStuff/ScoreboardWiFiControl/tree/main/LED_tester)"
+...use the Arduino code "[LED_tester](https://github.com/JPMakesStuff/ScoreboardWiFiControl/tree/main/LED_tester)"<br/>
 ...modify the SSID section near the top to match your WiFi on the field, or your home WiFi, or your phone's hotspot when testing anywhere
 
 See [example of test page](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/Webpage_Screenshot_LED_tester.png)
