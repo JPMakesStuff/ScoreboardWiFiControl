@@ -14,8 +14,7 @@ As currently implemented both the Arduino and your end-users should connect to t
 Example webpage... (Make it an "app" icon using browser options menu, "Add to Home screen")<br/>
 ![Webpage_Screenshot_On_Phone](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/Webpage_Screenshot_On_Phone.png?raw=true)
 
-Digits are connected by a 10pin ribbon cable, of which only 4 pins are useful (doubled up for redundancy against broken lines, I guess?)<br/>
-This cable connects to HC595 8-Bit Shift Register ICs on each digit.
+## Software for Arduino
 
 On the [3314](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/3314.jpg) baseball scoreboard this cable is routed like this...<br/>
 Arduino --> Left home digit (10's) --> right home digit (1's) --> Inning --> Dot driver board --> Left guest digit --> Right guest digit<br/>
@@ -31,6 +30,15 @@ To test individual digit boards, or the vane driver board (for ball/strike/out d
 Arduino --> only one digit at a time -- not the entire scoreboard!<br/>
 ...no other digits should be daisy-chained via additional ribbon cables connected to "output"<br/>
 ...use the Arduino code "LED_tester" [example of test page](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/Webpage_Screenshot_LED_tester.png)
+
+Graphics are included as a sprites file so there's only a single .png request (prevents upsetting Arduino's little web server as opposed to 10+ image requests)  If you want to insert your own logo and touch button graphics you could edit the [example .png graphic](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/sprites_example.png), keeping the same placement and dimensions, then ask ChatGPT to create the arduino_images.h file from your own .png file.
+
+I spent days reverse engineering this, drop me a line if it helped you, or if you've adapted it to another model scoreboard!  If you'd like assistance in repair of your scoreboard or implementation of this new WiFi control method please contact me, hardware kits are available on my Etsy shop: [etsy.com/shop/JPElectron](https://www.etsy.com/shop/JPElectron)
+
+## Hardware connections
+
+Digits are connected by a 10pin ribbon cable, of which only 4 pins are useful (doubled up for redundancy against broken lines, I guess?)<br/>
+This cable connects to a HC595 IC (8-Bit Shift Register), which turns "on" a channel of the ULN2803A (NPN Darlington Transistor Array) which allows 35v power to flow through a voltage regulator to 2 sets of 13 LEDs in series, which makes up a segment of the digit, or a dot.
 
 Example pinout...<br/>
 ![10pin connector](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/10pin_ribbon_cable.jpg?raw=true)<br/>
@@ -60,11 +68,23 @@ In my case the scoreboards were all outdoors and all seemed to be getting wet in
 
 See [example of my new control box](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/Example_control_box.jpg)
 
-Graphics are included as a sprites file so there's only a single .png request (prevents upsetting Arduino's little web server as opposed to 10+ image requests)  If you want to insert your own logo and touch button graphics you could edit the [example .png graphic](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/sprites_example.png), keeping the same placement and dimensions, then ask ChatGPT to create the arduino_images.h file from your own .png file.
+## LED repair info
 
-I spent days reverse engineering this, drop me a line if it helped you, or if you've adapted it to another model scoreboard!
+Digit
+PCB - 1600129
+PCA - 1500129
+REV C
 
-Notes for cost comparison...
+Dots
+PCB - 1600131
+PCA - 1500131
+REV A
+
+35 V in → LM317 + 30 Ω → ~42 mA constant current → two parallel strings of 13 × 1.8 V LEDs (voltage of drop ~23.4v) → ~20–21 mA per LED
+
+LED size = T-1 3/4 = 5mm
+
+## Notes for cost comparison
 
 ~$263 for my control box (including conformal coating the PCBs, caulk, weatherproof box, screws, Arduino, 5v power supply, and wireless AP)
 
