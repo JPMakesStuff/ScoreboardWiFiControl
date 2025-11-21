@@ -16,20 +16,11 @@ Example webpage... (Make it an "app" icon using browser options menu, "Add to Ho
 
 ## Software for Arduino
 
-On the [3314](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/3314.jpg) baseball scoreboard this cable is routed like this...<br/>
-Arduino --> Left home digit (10's) --> right home digit (1's) --> Inning --> Dot driver board --> Left guest digit --> Right guest digit<br/>
-...remove the ribbon cable from control box found on the front side, hatch below the inning digit<br/>
-...use the Arduino code "ard_scoreboard"
+For the [3314](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/3314.jpg) baseball scoreboard<br>
+...use the Arduino code "[ard_scoreboard](https://github.com/JPMakesStuff/ScoreboardWiFiControl/tree/main/ard_scoreboard)"
 
-On the [3320](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/3320.jpg) baseball scoreboard they routed this cable in what I suppose was efficient for saving on copper wire but full on silly for programming...<br/>
-Arduino --> BallDigit, Inn1guest, Inn1home, Inn2home, Inn2guest, Inn3guest, Inn3home, Inn4home, Inn4guest, Inn5guest, Inn5home, Inn6home, Inn6guest, StrikeDigit, Inn7guest, Inn7home, Inn8home, Inn8guest, Inn9guest, Inn9home, LeftHomeDigit, RightHomeDigit, RightGuestDigit, LeftGuestDigit, OutDigit<br/>
-...remove the ribbon cable from control box found on the front side, hatch above the 2nd inning guest score digit<br/>
-...use the Arduino code "ard_bigscoreboard"
-
-To test individual digit boards, or the vane driver board (for ball/strike/out dots)<br/>
-Arduino --> only one digit at a time -- not the entire scoreboard!<br/>
-...no other digits should be daisy-chained via additional ribbon cables connected to "output"<br/>
-...use the Arduino code "LED_tester" [example of test page](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/Webpage_Screenshot_LED_tester.png)
+For the [3320](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/3320.jpg) baseball scoreboard<br>
+...use the Arduino code "[ard_bigscoreboard](https://github.com/JPMakesStuff/ScoreboardWiFiControl/tree/main/ard_bigscoreboard)"
 
 Graphics are included as a sprites file so there's only a single .png request (prevents upsetting Arduino's little web server as opposed to 10+ image requests)  If you want to insert your own logo and touch button graphics you could edit the [example .png graphic](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/sprites_example.png), keeping the same placement and dimensions, then ask ChatGPT to create the arduino_images.h file from your own .png file.
 
@@ -39,6 +30,14 @@ I spent days reverse engineering this, drop me a line if it helped you, or if yo
 
 Digits are connected by a 10pin ribbon cable, of which only 4 pins are useful (doubled up for redundancy against broken lines, I guess?)<br/>
 This cable connects to a HC595 IC (8-Bit Shift Register), which turns "on" a channel of the ULN2803A (NPN Darlington Transistor Array) which allows 35v power to flow through a voltage regulator to 2 sets of 13 LEDs in series, which makes up a segment of the digit, or a dot.
+
+On the [3314](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/3314.jpg) baseball scoreboard this cable is routed like this...<br/>
+Arduino --> Left home digit (10's) --> right home digit (1's) --> Inning --> Dot driver board --> Left guest digit --> Right guest digit<br/>
+...remove the ribbon cable from control box found on the front side, hatch below the inning digit
+
+On the [3320](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/3320.jpg) baseball scoreboard they routed this cable in what I suppose was efficient for saving on copper wire but full on silly for programming...<br/>
+Arduino --> BallDigit, Inn1guest, Inn1home, Inn2home, Inn2guest, Inn3guest, Inn3home, Inn4home, Inn4guest, Inn5guest, Inn5home, Inn6home, Inn6guest, StrikeDigit, Inn7guest, Inn7home, Inn8home, Inn8guest, Inn9guest, Inn9home, LeftHomeDigit, RightHomeDigit, RightGuestDigit, LeftGuestDigit, OutDigit<br/>
+...remove the ribbon cable from control box found on the front side, hatch above the 2nd inning guest score digit
 
 Example pinout...<br/>
 ![10pin connector](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/10pin_ribbon_cable.jpg?raw=true)<br/>
@@ -67,6 +66,15 @@ Someday this will die and I expect having to source a more common 36v supply and
 In my case the scoreboards were all outdoors and all seemed to be getting wet inside, plus the fact that it's a big metal box means putting the Arduino inside the scoreboard isn't the best for WiFi connectivity, so I elected to move the power supply and control circuitry to a [weatherproof box](https://www.amazon.com/dp/B0BFPXDN8M) and split the 120VAC using [this terminal block](https://www.amazon.com/dp/B0DNJRQP32).  Each scoreboard has a [wireless AP](https://www.amazon.com/dp/B0B231J81C) in a mesh configuration that connects them all back to the source of the WiFi at the concessions building.  We also use an Omada wireless controller and Omada firewall to allow GameChanger, but not streaming or YouTube or other high-bandwidth things.
 
 See [example of my new control box](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/Example_control_box.jpg)
+
+## LED digit or dot testing aid
+
+To test individual digit boards, or the "vane driver" board for (ball/strike/out) dots<br/>
+Arduino --> 10pin ribbon cable --> only one digit at a time, not the entire scoreboard!<br/>
+...no other digits should be daisy-chained via additional ribbon cables connected to "output"<br/>
+...it's OK to keep the 3pin power cable connected to all, unless your trying to isolate a damaged/corroded/shorted digit or dot
+...you MUST also connect GND on the Arduino to GND on the ribbon cable (or GND on the 3pin power cable)
+...use the Arduino code "[LED_tester](https://github.com/JPMakesStuff/ScoreboardWiFiControl/tree/main/LED_tester)" [example of test page](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/Webpage_Screenshot_LED_tester.png)
 
 ## LED repair info
 
