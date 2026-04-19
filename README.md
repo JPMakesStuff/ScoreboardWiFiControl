@@ -24,7 +24,7 @@ For the [3320](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/3
 
 Graphics are included as a sprites file so there's only a single .png request (prevents upsetting Arduino's little web server as opposed to 10+ image requests)  If you want to insert your own logo and touch button graphics you could edit the [example .png graphic](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/sprites_example.png), keeping the same placement and dimensions, then ask ChatGPT to create the arduino_images.h file from your own .png file.
 
-I spent days reverse engineering this, drop me a line if it helped you, or if you've adapted it to another model scoreboard!  If you'd like assistance in repair of your scoreboard or implementation of this new WiFi control method please contact me, hardware kits are available on my Etsy shop: [etsy.com/shop/JPElectron](https://www.etsy.com/shop/JPElectron)
+I spent days reverse engineering this, drop me a line if it helped you, or if you've adapted it to another model scoreboard!  If you'd like assistance in repair of your scoreboard or implementation of this new WiFi control method please contact me.  As of today I sell the [Arduino interface cable](https://www.etsy.com/listing/4490992543/arduino-to-baseball-scoreboard-control) on my Etsy shop and hope to offer full hardware conversion kits in the future if the demand is there.
 
 ## Hardware connections
 
@@ -42,7 +42,7 @@ Arduino --> BallDigit, Inn1guest, Inn1home, Inn2home, Inn2guest, Inn3guest, Inn3
 Example pinout...<br/>
 ![10pin connector](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/10pin_ribbon_cable.jpg?raw=true)
 
-On the cable I sell, pay attention to the colors plugged into the Arduino...<br/>
+On the [cable I sell](https://www.etsy.com/listing/4490992543/arduino-to-baseball-scoreboard-control) pay attention to the colors plugged into the Arduino...<br/>
  - GND on Arduino is Green wire</br>
  ... **you MUST connect all GND together: the Arduino GND the ribbon cable GND and the scoreboard power supply GND**<br/>
  - Pin 6 on Arduino is Blue wire<br/>
