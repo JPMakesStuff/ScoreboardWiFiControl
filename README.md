@@ -43,7 +43,8 @@ Example pinout...<br/>
 ![10pin connector](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/10pin_ribbon_cable.jpg?raw=true)
 
 On the cable I sell, pay attention to the colors plugged into the Arduino<br/>
- - GND on Arduino is Green wire **you MUST connect all GND together: the Arduino GND the ribbon cable GND and the scoreboard power supply GND**<br/>
+ - GND on Arduino is Green wire</br>
+ - **you MUST connect all GND together: the Arduino GND the ribbon cable GND and the scoreboard power supply GND**<br/>
  - Pin 6 on Arduino is Blue wire<br/>
  - Pin 5 on Arduino is Yellow wire<br/>
  - Pin 4 on Arcuino is White or Purple wire<br/>
