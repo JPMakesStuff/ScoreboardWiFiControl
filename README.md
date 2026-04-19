@@ -42,13 +42,13 @@ Arduino --> BallDigit, Inn1guest, Inn1home, Inn2home, Inn2guest, Inn3guest, Inn3
 Example pinout...<br/>
 ![10pin connector](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/10pin_ribbon_cable.jpg?raw=true)
 
-On the cable I sell, pay attention to the colors plugged into the Arduino<br/>
+On the cable I sell, pay attention to the colors plugged into the Arduino...<br/>
  - GND on Arduino is Green wire</br>
- - **you MUST connect all GND together: the Arduino GND the ribbon cable GND and the scoreboard power supply GND**<br/>
+ ... **you MUST connect all GND together: the Arduino GND the ribbon cable GND and the scoreboard power supply GND**<br/>
  - Pin 6 on Arduino is Blue wire<br/>
  - Pin 5 on Arduino is Yellow wire<br/>
  - Pin 4 on Arcuino is White or Purple wire<br/>
-See [picture here](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/Example_Arduino_Connection.jpg) of Arduino connection</br>
+...see the [picture here](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/Example_Arduino_Connection.jpg) of Arduino connection</br>
 
 Valid ways of connecting to this cable without butchering it (so you could connect it back to the manufacture's control box) are...<br/>
  - [2X5 10P Dual Rows 2.54mm 0.1" Pitch Shrouded IDC Male Header](https://www.amazon.com/dp/B00B3PI02G)
