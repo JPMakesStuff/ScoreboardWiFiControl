@@ -38,7 +38,8 @@ If this never happens then either your WiFi details are incorrect, out of range,
 
 ## Hardware connections
 
-The ribbon cable must be unplugged from the manufacturer's control box (usually located behind the large hatch below or behind the inning digit)
+The ribbon cable must be unplugged from the manufacturer's control box<br/>
+(usually located behind the large hatch below or behind the inning digit)<br/>
 Example pinout...<br/>
 ![10pin connector](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/10pin_ribbon_cable.jpg?raw=true)
 
@@ -59,21 +60,20 @@ I spent days reverse engineering this, drop me a line if it helped you, or if yo
 
 ## WiFi technical info
 
-In my implementation we are using the following harware...
- - TP-Link Omada firewall ER605v2 https://www.amazon.com/dp/B08QTXNWZ1
+In my implementation we are using the following hardware...
+ - TP-Link Omada firewall ER605v2 https://www.amazon.com/dp/B08QTXNWZ1<br/>
    ...also allows for content filtering to keep limited wireless bandwidth available for the GameChanger app
       (such as no YouTube, Hulu, Disney+ or adult sites)
- - TP-Link Omada wireless controller OC200 https://www.amazon.com/dp/B08SW3GFHH
-   ...newer versions are also OK, but not nessesary for 8 or less WiFi APs
-      this is required to put the scoreboard mounted APs into mesh mode
- - TP-Link EAP610 Outdoor AP https://www.amazon.com/dp/B0B231J81C
+ - TP-Link Omada wireless controller OC220 https://www.amazon.com/dp/B0FRW8GM11<br/>
+   ...this is required to put the scoreboard mounted APs into mesh mode
+ - TP-Link EAP610 Outdoor AP https://www.amazon.com/dp/B0B231J81C<br/>
    ...one goes on the concessions building, one goes on the scoreboard
- - Universal Wireless mount 2pk https://www.amazon.com/dp/B0BCNZFNTD
+ - Universal Wireless mount 2pk https://www.amazon.com/dp/B0BCNZFNTD<br/>
    ...makes it easy to mount the APs so they face eachother
- - RasPi 4 model B with 4GB RAM https://www.amazon.com/dp/B07TD42S27
+ - RasPi 4 model B with 4GB RAM https://www.amazon.com/dp/B07TD42S27<br/>
    ...this acts as a [Tailscale subnet router](https://tailscale.com/docs/features/subnet-routers) so I can control the scoreboards from anywhere, even when I'm home and not on the field WiFi
 
-I intentionally decided to use an Arduino with WiFi as opposed to an Arduino with Ethernet; since each scoreboard has it's own AP mounted on it the signal is great and some level of lightning protection is achived by not having a direct Ethernet connection to the AP.
+I intentionally decided to use an Arduino with WiFi as opposed to an Arduino with Ethernet; since each scoreboard has it's own AP mounted on it the signal is great and some level of lightning protection is achieved by not having a direct Ethernet connection to the AP.
 
 As currently implemented both the Arduino and your end-users should connect to the same wireless SSID, the Arduino should be given a DHCP reservation (so the IP doesn't change) on the network, and optionally a DNS A record pointing to that IP for an easy to remember name.  Arduino code could be modified so the Arduino broadcasts it's own SSID (AP mode) but this is considerably less reliable in terms of WiFi channel saturation and end-user connection simplicity, so I strongly suggest against this. If the wireless doesn't actually provide Internet, users will have to pick "stay connected" on their device, some devices don't handle this well and won't continue to route Internet out the cellular connection resulting in loss of calls, text messages, or other app data.
 
@@ -83,7 +83,7 @@ Scoreboard digits are connected internally by a 10pin ribbon cable, of which onl
 
 On the [3314](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/3314.jpg) baseball scoreboard this cable is routed like this...<br/>
 Arduino --> Left home digit (10's) --> right home digit (1's) --> Inning --> Dot driver board --> Left guest digit --> Right guest digit<br/>
-...remove the ribbon cable from control box found on the front side, hatch below the inning digit
+...remove the ribbon cable from control box found on the front side, hatch below the inning digit<br/>
 See [3314 wiring diagram](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/3314-Wiring-Diagram.png)
 
 On the [3320](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/3320.jpg) baseball scoreboard they routed this cable in what I suppose was efficient for saving on copper wire but full on silly for programming...<br/>
@@ -100,7 +100,7 @@ I power the Arduino using a [5v 2amp USB power supply](https://www.amazon.com/dp
 
 Note on the manufacture's power supply located inside the control box...<br/>
 MeanWell PD85-SP with dual output 12VDC 0.25A + 35VDC 2.3A (which I can't find anywhere today, perhaps was custom built just for Varsity)<br/>
-Someday this will die and I expect having to source a more common 36v supply and using the internal trim pot found on most MeanWell supply's to make it output 35v, having a seperate 12v power supply, then connecting both GNDs together.<br/>
+Someday this will die and I expect having to source a more common 36v supply and using the internal trim pot found on most MeanWell supply's to make it output 35v, having a separate 12v power supply, then connecting both GNDs together.<br/>
  - Red wire is 35v rail - used to power the LED segments via several voltage regulators, one for each segment of the 7-segment digit<br/>
  - Brown wire is 12v rail - used to power a single voltage regulator on each digit which drops to 5v to power the HC595 and ULN2803A chips<br/>
  - Black wire is GND<br/>
