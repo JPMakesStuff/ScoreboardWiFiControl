@@ -43,7 +43,7 @@ The ribbon cable must be unplugged from the manufacturer's control box<br/>
 Example pinout...<br/>
 ![10pin connector](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/10pin_ribbon_cable.jpg?raw=true)
 
-On the [cable I sell](https://www.etsy.com/listing/4490992543/arduino-to-baseball-scoreboard-control) pay attention to the colors plugged into the Arduino...<br/>
+On the [cable I sell](https://jpelectron.etsy.com) pay attention to the colors plugged into the Arduino...<br/>
  - GND on Arduino is $\color{Green}{\textsf{Green}}$ wire</br>
  - Pin 6 on Arduino is $\color{Blue}{\textsf{Blue}}$ wire<br/>
  - Pin 5 on Arduino is $\color{Yellow}{\textsf{Yellow}}$ wire<br/>
@@ -51,10 +51,9 @@ On the [cable I sell](https://www.etsy.com/listing/4490992543/arduino-to-basebal
 ...see the [picture here](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/Example_Arduino_Connection.jpg) of Arduino connection</br>
 
 Valid ways of connecting to the ribbon cable without butchering it are...<br/>
- - [2X5 10P Dual Rows 2.54mm 0.1" Pitch Shrouded IDC Male Header](https://www.amazon.com/dp/B00B3PI02G)
- - [Male IDC Socket 10 Pin 2x5 Pin 2.54mm Pitch Box Header Connector](https://www.amazon.com/dp/B08T1YDG8M)
- - [Male to Male Breadboard Jumper Ribbon Cables](https://www.amazon.com/dp/B01EV70C78)
- - [Pre-made cable from me on Etsy](https://www.etsy.com/listing/4490992543/arduino-to-baseball-scoreboard-control)
+ - [cable I sell](https://jpelectron.etsy.com)
+ - [Dual Rows 2.54mm 0.1" Pitch Shrouded IDC Male Header](https://www.amazon.com/dp/B00B3PI02G)
+ - [Male IDC Socket 10 Pin 2x5 Pin 2.54mm Pitch](https://www.amazon.com/dp/B08T1YDG8M)
 
 I spent days reverse engineering this, drop me a line if it helped you, or if you've adapted it to another model scoreboard!  If you'd like assistance in repair of your scoreboard or implementation of this new WiFi control method please contact me.  As of today I sell the [Arduino interface cable](https://www.etsy.com/listing/4490992543/arduino-to-baseball-scoreboard-control) on my Etsy shop and hope to offer full hardware conversion kits in the future if the demand is there.
 
