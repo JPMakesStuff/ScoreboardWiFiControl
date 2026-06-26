@@ -83,7 +83,7 @@ Scoreboard digits are connected internally by a 10pin ribbon cable, of which onl
 On the [3314](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/3314.jpg) baseball scoreboard this cable is routed like this...<br/>
 Arduino --> Left home digit (10's) --> right home digit (1's) --> Inning --> Dot driver board --> Left guest digit --> Right guest digit<br/>
 ...remove the ribbon cable from control box found on the front side, hatch below the inning digit<br/>
-See [3314 wiring diagram](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/3314-Wiring-Diagram.png)
+See [3314 wiring diagram](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/LED_repair_info/3314-Wiring-Diagram.png)
 
 On the [3320](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/3320.jpg) baseball scoreboard they routed this cable in what I suppose was efficient for saving on copper wire but full on silly for programming...<br/>
 Arduino --> BallDigit, Inn1guest, Inn1home, Inn2home, Inn2guest, Inn3guest, Inn3home, Inn4home, Inn4guest, Inn5guest, Inn5home, Inn6home, Inn6guest, StrikeDigit, Inn7guest, Inn7home, Inn8home, Inn8guest, Inn9guest, Inn9home, LeftHomeDigit, RightHomeDigit, RightGuestDigit, LeftGuestDigit, OutDigit<br/>
@@ -104,7 +104,7 @@ Someday this will die and I expect having to source a more common 36v supply and
  - Brown wire is 12v rail - used to power a single voltage regulator on each digit which drops to 5v to power the HC595 and ULN2803A chips<br/>
  - Black wire is GND<br/>
 
-In my case the scoreboards were all outdoors and all seemed to be getting wet inside, plus the fact that it's a big metal box means putting the Arduino inside the scoreboard isn't the best for WiFi connectivity, so I elected to move the power supply and control circuitry to a [weatherproof box](https://www.amazon.com/dp/B0BFPXDN8M) and split the 120VAC using [this terminal block](https://www.amazon.com/dp/B0DNJRQP32).  Each scoreboard has a wireless AP in a mesh configuration that connects them all back to the source of the WiFi at the concessions building.  We also use an Omada wireless controller and Omada firewall to allow GameChanger, but not streaming or YouTube or other high-bandwidth things.
+In my case the scoreboards were all outdoors and all seemed to be getting wet inside, plus the fact that it's a big metal box means putting the Arduino inside the scoreboard isn't the best for WiFi connectivity, so I elected to move the power supply and control circuitry to a [weatherproof box](https://www.amazon.com/dp/B0BFPXDN8M) and split the 120VAC using [this terminal block](https://www.amazon.com/dp/B0DNJRQP32).  Each scoreboard has a wireless AP in a mesh configuration that connects them all back to the source of the WiFi at the concessions building.
 
 See [example of my new control box](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/Example_control_box.jpg)
 
@@ -135,6 +135,8 @@ REV A<br/>
 35v in → LM317 + 30 Ω → ~42 mA constant current → two parallel strings of 13 × 1.8v LEDs (voltage of drop ~23.4v) → ~20–21 mA per LED
 
 LED size = T-1 3/4 5mm = DigiKey part 350-5218765F-ND, Mfg part 5218765F by Dialight
+
+See [LED repair info](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/LED_repair_info)
 
 ## Notes for cost comparison
 
