@@ -12,7 +12,7 @@ char pass[] = SECRET_PASS;
 int keyIndex = 0;
 
 // store the software version
-char swver[] = "25.05.31r07";
+char swver[] = "26.07.10r08";
 
 // declair pins
 int dataPin = 4;	// Data pin of 74HC595 is connected to Digital pin 4 (purple wire to digit ribbon cable)
@@ -1054,9 +1054,9 @@ WiFiClient client = server.available();   // listen for incoming clients
           client.print("API endpoints...<br><br>");
           client.print("&nbsp;&nbsp;&nbsp;<a href=\"/rhome\">/rhome</a> - <u>r</u>eturns homeScore as integer<br><br>");
           client.print("&nbsp;&nbsp;&nbsp;<a href=\"/rhome?show=yes\">/rhome?show=yes</a> - <u>r</u>eturns homeScore as an HTML page<br><br>");
-          client.print("&nbsp;&nbsp;&nbsp;<a href=\"/shome?11\">/shome?11</a> - <u>s</u>ets the homeScore to 11<br><br>");
+          client.print("&nbsp;&nbsp;&nbsp;<a href=\"/shome?88\">/shome?88</a> - <u>s</u>ets the homeScore to 88<br><br>");
           client.print("other endpoint names...<br><br>");
-          client.print("&nbsp;&nbsp;&nbsp;inn, guest, ball, strike, out<br>");
+          client.print("&nbsp;&nbsp;&nbsp;<a href=\"/sinn?8\">/sinn?8</a>, <a href=\"/sguest?88\">/sguest?88</a>, <a href=\"/sball?3\">/sball?3</a>, <a href=\"/sstrike?2\">/sstrike?2</a>, <a href=\"/sout?2\">/sout?2</a><br>");
 
           client.print("<br><br>");
 
@@ -1099,7 +1099,7 @@ WiFiClient client = server.available();   // listen for incoming clients
           client.print("Scoreboard web interface v");
           client.print(swver);
           client.print("<br>");
-          client.print("&copy; 2025 JPMakesStuff<br>");
+          client.print("&copy; 2026 JPMakesStuff<br>");
           client.print("</font>");
 
           client.print("<iframe name=\"hidden\" width=\"50\" height=\"20\" align=\"top\" src=\"/placeholder\" frameborder=\"0\" scrolling=\"no\" marginwidth=\"0\" marginheight=\"0\"></iframe>");
@@ -1221,7 +1221,7 @@ WiFiClient client = server.available();   // listen for incoming clients
           client.print("Scoreboard web interface v");
           client.print(swver);
           client.print("<br>");
-          client.print("&copy; 2025 JPMakesStuff<br>");
+          client.print("&copy; 2026 JPMakesStuff<br>");
           client.print("</font>");
 
           client.print("<iframe name=\"hidden\" width=\"50\" height=\"20\" align=\"top\" src=\"/placeholder\" frameborder=\"0\" scrolling=\"no\" marginwidth=\"0\" marginheight=\"0\"></iframe>");
@@ -1332,7 +1332,7 @@ WiFiClient client = server.available();   // listen for incoming clients
           client.print("Scoreboard web interface v");
           client.print(swver);
           client.print("<br>");
-          client.print("&copy; 2025 JPMakesStuff<br>");
+          client.print("&copy; 2026 JPMakesStuff<br>");
           client.print("</font>");
 
           client.print("<iframe name=\"hidden\" width=\"50\" height=\"20\" align=\"top\" src=\"/placeholder\" frameborder=\"0\" scrolling=\"no\" marginwidth=\"0\" marginheight=\"0\"></iframe>");
@@ -1399,7 +1399,7 @@ WiFiClient client = server.available();   // listen for incoming clients
           client.print("Scoreboard web interface v");
           client.print(swver);
           client.print("<br>");
-          client.print("&copy; 2025 JPMakesStuff<br>");
+          client.print("&copy; 2026 JPMakesStuff<br>");
           client.print("</font>");
 
           client.print("<iframe name=\"hidden\" width=\"50\" height=\"20\" align=\"top\" src=\"/placeholder\" frameborder=\"0\" scrolling=\"no\" marginwidth=\"0\" marginheight=\"0\"></iframe>");
