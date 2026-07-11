@@ -156,4 +156,8 @@ $1,824.95 | SKU# 1001LCDW
 
 ...I'm not paying that for something that disconnects and resets the score 95% of the time.
 
+[How it's made YouTube video](https://www.youtube.com/watch?v=2Ui810LpJfk) showing scoreboard assembly process
+
+[Outdoor installation video](https://www.youtube.com/watch?v=sqrrQPMJL8o) by the same company
+
 [End of Line]
