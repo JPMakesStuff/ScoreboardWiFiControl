@@ -47,7 +47,7 @@ On the [cable I sell](https://jpelectron.etsy.com) pay attention to the colors p
  - GND on Arduino is $\color{Green}{\textsf{Green}}$ wire</br>
  - Pin 6 on Arduino is $\color{Blue}{\textsf{Blue}}$ wire<br/>
  - Pin 5 on Arduino is $\color{Yellow}{\textsf{Yellow}}$ wire<br/>
- - Pin 4 on Arcuino is White or $\color{Purple}{\textsf{Purple}}$ wire<br/>
+ - Pin 4 on Arduino is White or $\color{Purple}{\textsf{Purple}}$ wire<br/>
 ...see the [picture here](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/Example_Arduino_Connection.jpg) of Arduino connection</br>
 
 Valid ways of connecting to the ribbon cable without butchering it are...<br/>
@@ -68,7 +68,7 @@ In my implementation we are using the following hardware...
  - TP-Link EAP610 Outdoor AP https://www.amazon.com/dp/B0B231J81C<br/>
    ...one goes on the concessions building, one goes on the scoreboard
  - Universal Wireless mount 2pk https://www.amazon.com/dp/B0BCNZFNTD<br/>
-   ...makes it easy to mount the APs so they face eachother
+   ...makes it easy to mount the APs so they face each other
  - RasPi 4 model B with 4GB RAM https://www.amazon.com/dp/B07TD42S27<br/>
    ...this acts as a [Tailscale subnet router](https://tailscale.com/docs/features/subnet-routers) so I can control the scoreboards from anywhere, even when I'm home and not on the field WiFi
 
