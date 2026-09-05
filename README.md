@@ -137,7 +137,9 @@ REV A<br/>
 LED size = T-1 3/4 5mm = DigiKey part 350-5218765F-ND, Mfg part 5218765F by Dialight
 
 https://varsityscoreboards.com/scoreboard-parts/led-dots/replacement-2-inch-outdoor-dot/
+
 https://varsityscoreboards.com/uncategorized/vane-dot-driver-board-1500055
+
 https://varsityscoreboards.com/uncategorized/outdoor-15-led-digit-panel-1501015-12
 
 See [LED repair info](https://github.com/JPMakesStuff/ScoreboardWiFiControl/blob/main/LED_repair_info)
